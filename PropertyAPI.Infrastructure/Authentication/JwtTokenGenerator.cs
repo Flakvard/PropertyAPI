@@ -3,11 +3,19 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using PropertyAPI.Application.Commmon.Interfaces.Authentication;
+using PropertyAPI.Application.Commmon.Interfaces.Services;
 
 namespace PropertyAPI.Infrastructure.Authentication;
 
 // NOTE: Possibility to add an identity server like AAD (Azure Active Directory)
 public class JwtTokenGenerator : IJwtTokenGenerator{
+
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public JwtTokenGenerator(IDateTimeProvider dateTimeProvider)
+    {
+        _dateTimeProvider = dateTimeProvider;
+    }
 
     public string GenerateToken(Guid userid, string FirstName, string LastName){
         var signingCredentials = new SigningCredentials(
@@ -24,7 +32,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator{
 
         var securityToken = new JwtSecurityToken(
             issuer: "PropertyApi",
-            expires: DateTime.UtcNow.AddDays(1),
+            expires: _dateTimeProvider.UtcNow.AddMinutes(60),
             claims: claims,
             signingCredentials: signingCredentials);
 
