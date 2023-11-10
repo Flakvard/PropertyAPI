@@ -11,4 +11,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PropertyAPI.Contract\PropertyAPI.Contract.csproj" />
+    <ProjectReference Include="..\PropertyAPI.Application\PropertyAPI.Application.csproj" />
+    <ProjectReference Include="..\PropertyAPI.Infrastructure\PropertyAPI.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
