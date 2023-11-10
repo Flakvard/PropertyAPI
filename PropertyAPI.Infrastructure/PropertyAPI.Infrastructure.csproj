@@ -10,4 +10,8 @@
     <ProjectReference Include="..\PropertyAPI.Application\PropertyAPI.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+  </ItemGroup>
+
 </Project>
