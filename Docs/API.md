@@ -1,3 +1,12 @@
+# Auth
+
+#### Register
+
+```http
+POST {{host}}/auth/register
+```
+
+
 #### Register Request
 ```json
 {
@@ -5,7 +14,6 @@
     "lastName": "Falkvard Joensen",
     "email": "marni@mail.com",
     "password": "password123",
-
 }
 ```
 
