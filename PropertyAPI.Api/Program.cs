@@ -1,9 +1,11 @@
-using PropertyAPI.Application.Services.Authentication;
+using PropertyAPI.Application;
+using PropertyAPI.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Services.AddApplication();
+    builder.Services.AddInfrastructure();
     builder.Services.AddControllers();
-    builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 }
 
 var app = builder.Build();
