@@ -1,9 +1,9 @@
+using System.Reflection.Metadata.Ecma335;
+using PropertyAPI.Domain.Entities;
+
 namespace PropertyAPI.Application.Services.Authentication;
 
 public record AuthenticationResult(
-    Guid Id,
-    string FirstName,
-    string LastName,
-    string Email,
+    User User,
     string Token
 );
