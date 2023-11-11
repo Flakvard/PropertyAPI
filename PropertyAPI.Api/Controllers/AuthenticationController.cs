@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using PropertyAPI.Contract.Authentication;
 using PropertyAPI.Application.Services.Authentication;
 using ErrorOr;
+using PropertyAPI.Domain.Common.Errors;
 namespace PropertyAPI.Api.Controllers;
 
-[ApiController]
 [Route("auth")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
 {
 
     private readonly IAuthenticationService _authService;
@@ -20,28 +20,28 @@ public class AuthenticationController : ControllerBase
 
         return authResult.Match(
             authResult => Ok(MapAuthResult(authResult)),
-            _ => Problem(statusCode: StatusCodes.Status409Conflict, title: "User already exists")
+            errors => Problem(errors)
         );
 
     }
 
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request){
-        ErrorOr<AuthenticationResult> authResult = _authService.Login(request.Email, request.Password);
 
-        return authResult.MatchFirst(
+        var authResult = _authService.Login(
+            request.Email,
+            request.Password);
+        
+        if (authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredentials){
+            return Problem(
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: authResult.FirstError.Description);
+        }
+
+        return authResult.Match(
             authResult => Ok(MapAuthResult(authResult)),
-            firstError => Problem(statusCode: StatusCodes.Status409Conflict, title: firstError.Description)
+            errors => Problem(errors)
         );
-        // var authResult = _authService.Login(request.Email, request.Password);
-        // var response = new AuthenticationResponse(
-        //     authResult.User.Id,
-        //     authResult.User.FirstName,
-        //     authResult.User.LastName,
-        //     authResult.User.Email,
-        //     authResult.Token
-        // );
-        // return Ok(response);
     }
 
     private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)

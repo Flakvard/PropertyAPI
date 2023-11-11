@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
+using PropertyAPI.Api.Common.Http;
 
 namespace PropertyAPI.Api.Common.Errors;
 // Copy past from the Microsoft.AspNetCore.Mvc.Infrastructure; 
@@ -91,7 +93,11 @@ public class PropertyProblemDetailsFactory : ProblemDetailsFactory
         {
             problemDetails.Extensions["traceId"] = traceId;
         }
-        problemDetails.Extensions.Add("customPropery","customValue");
+
+        var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
+
+        if (errors is not null)
+            problemDetails.Extensions.Add("errorCodes",errors.Select(e => e.Code));
 
         _configure?.Invoke(new() { HttpContext = httpContext!, ProblemDetails = problemDetails });
     }

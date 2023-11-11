@@ -1,5 +1,4 @@
 using ErrorOr;
-using PropertyAPI.Application.Commmon.Errors;
 using PropertyAPI.Application.Commmon.Interfaces.Authentication;
 using PropertyAPI.Application.Commmon.Interfaces.Persistence;
 using PropertyAPI.Domain.Common.Errors;
@@ -22,11 +21,11 @@ public class AuthenticationService : IAuthenticationService
 
         // 1. Validate the user does exist
         if(_userRepository.GetUserByEmail(email) is not User user)
-                throw new DuplicateEmailException();
+                return Errors.Authentication.InvalidCredentials;
 
         // 2. Validate the password is correct
         if(user.Password != password)
-                throw new Exception("Invalid password");
+                return new[] {Errors.Authentication.InvalidCredentials};
 
         // 3. Create JwtToken 
         var token = _jwtTokenGenerator.GenerateToken(user);
