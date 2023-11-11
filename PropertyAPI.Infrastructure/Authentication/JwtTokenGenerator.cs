@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PropertyAPI.Application.Commmon.Interfaces.Authentication;
 using PropertyAPI.Application.Commmon.Interfaces.Services;
@@ -12,15 +13,18 @@ public class JwtTokenGenerator : IJwtTokenGenerator{
 
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public JwtTokenGenerator(IDateTimeProvider dateTimeProvider)
+    private readonly JwtTokenSettings _jwtTokenSettings;
+
+    public JwtTokenGenerator(IDateTimeProvider dateTimeProvider,IOptions<JwtTokenSettings> jwtOptions)
     {
+        _jwtTokenSettings = jwtOptions.Value;
         _dateTimeProvider = dateTimeProvider;
     }
 
     public string GenerateToken(Guid userid, string FirstName, string LastName){
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes("super-secret-keysuper-secret-key")),
+                    Encoding.UTF8.GetBytes(_jwtTokenSettings.Secret)),
                 SecurityAlgorithms.HmacSha256);
 
         var claims = new[]{
@@ -31,8 +35,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator{
         };
 
         var securityToken = new JwtSecurityToken(
-            issuer: "PropertyApi",
-            expires: _dateTimeProvider.UtcNow.AddMinutes(60),
+            issuer: _jwtTokenSettings.Issuer,
+            audience: _jwtTokenSettings.Audience,
+            expires: _dateTimeProvider.UtcNow.AddMinutes(_jwtTokenSettings.ExperyMinutes),
             claims: claims,
             signingCredentials: signingCredentials);
 
