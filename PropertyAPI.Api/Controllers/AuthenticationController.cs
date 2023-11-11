@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PropertyAPI.Contract.Authentication;
 using PropertyAPI.Application.Services.Authentication;
+using PropertyAPI.Api.Filters;
 namespace PropertyAPI.Api.Controllers;
 
 [ApiController]
