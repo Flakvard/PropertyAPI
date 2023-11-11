@@ -1,7 +1,6 @@
-using System.Reflection.Metadata.Ecma335;
 using PropertyAPI.Domain.Entities;
 
-namespace PropertyAPI.Application.Services.Authentication;
+namespace PropertyAPI.Application.Services.Authentication.Common;
 
 public record AuthenticationResult(
     User User,

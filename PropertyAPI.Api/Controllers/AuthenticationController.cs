@@ -1,25 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using PropertyAPI.Contract.Authentication;
-using PropertyAPI.Application.Services.Authentication;
 using ErrorOr;
 using PropertyAPI.Domain.Common.Errors;
+using PropertyAPI.Application.Services.Authentication.Common;
+using PropertyAPI.Application.Services.Authentication.Commands;
+using PropertyAPI.Application.Services.Authentication.Queries;
 namespace PropertyAPI.Api.Controllers;
 
 [Route("auth")]
 public class AuthenticationController : ApiController
 {
 
-    private readonly IAuthenticationService _authService;
-    public AuthenticationController(IAuthenticationService authService){
-        _authService = authService;
+    private readonly IAuthenticationCommandService _authCommandService;
+    private readonly IAuthenticationQueryService _authQueryService;
+    public AuthenticationController(IAuthenticationCommandService authenticationCommandService, IAuthenticationQueryService authenticationQueryService){
+        _authCommandService = authenticationCommandService;
+        _authQueryService = authenticationQueryService;
     }
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        ErrorOr<AuthenticationResult> authResult = _authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+        ErrorOr<AuthenticationResult> authCommandResult = _authCommandService.Register(request.FirstName, request.LastName, request.Email, request.Password);
 
-        return authResult.Match(
-            authResult => Ok(MapAuthResult(authResult)),
+        return authCommandResult.Match(
+            authCommandResult => Ok(MapAuthResult(authCommandResult)),
             errors => Problem(errors)
         );
 
@@ -28,18 +32,18 @@ public class AuthenticationController : ApiController
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request){
 
-        var authResult = _authService.Login(
+        var authQueryResult = _authQueryService.Login(
             request.Email,
             request.Password);
         
-        if (authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredentials){
+        if (authQueryResult.IsError && authQueryResult.FirstError == Errors.Authentication.InvalidCredentials){
             return Problem(
                 statusCode: StatusCodes.Status401Unauthorized,
-                title: authResult.FirstError.Description);
+                title: authQueryResult.FirstError.Description);
         }
 
-        return authResult.Match(
-            authResult => Ok(MapAuthResult(authResult)),
+        return authQueryResult.Match(
+            authQueryResult => Ok(MapAuthResult(authQueryResult)),
             errors => Problem(errors)
         );
     }
