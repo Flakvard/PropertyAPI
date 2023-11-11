@@ -1,11 +1,15 @@
+using System.Reflection;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using PropertyAPI.Application.Services.Authentication;
 
 namespace PropertyAPI.Application;
 
 public static class DependencyInjection {
     public static IServiceCollection AddApplication(this IServiceCollection services){
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddMediatR(cfg=>cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+        // services.AddMediatR(typeof(DependencyInjection).Assembly);
         return services;
     }
 } 
+        //services.AddScoped<IAuthenticationCommandService, AuthenticationCommandService>();
+        //services.AddScoped<IAuthenticationQueryService, AuthenticationQueryService>();
