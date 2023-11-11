@@ -1,7 +1,8 @@
-using System;
-using System.Security.Principal;
+using ErrorOr;
+using PropertyAPI.Application.Commmon.Errors;
 using PropertyAPI.Application.Commmon.Interfaces.Authentication;
 using PropertyAPI.Application.Commmon.Interfaces.Persistence;
+using PropertyAPI.Domain.Common.Errors;
 using PropertyAPI.Domain.Entities;
 
 namespace PropertyAPI.Application.Services.Authentication;
@@ -17,11 +18,11 @@ public class AuthenticationService : IAuthenticationService
         _userRepository = userRepository;
     }
 
-    public AuthenticationResult Login(string email, string password){
+    public ErrorOr<AuthenticationResult> Login(string email, string password){
 
         // 1. Validate the user does exist
         if(_userRepository.GetUserByEmail(email) is not User user)
-                throw new Exception("User email already exists");
+                throw new DuplicateEmailException();
 
         // 2. Validate the password is correct
         if(user.Password != password)
@@ -36,10 +37,10 @@ public class AuthenticationService : IAuthenticationService
             token
             );
     }
-    public AuthenticationResult Register(string firstname, string lastname, string email, string password){
+    public ErrorOr<AuthenticationResult> Register(string firstname, string lastname, string email, string password){
         // 1. Validate the user doesn't exist
         if(_userRepository.GetUserByEmail(email) is not null)
-                throw new Exception("User email already exists");
+            return Errors.User.DuplicateEmail;
 
         // 2. Create a user (Generate unique ID) and Persist to DB
         var user = new User{

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 
-namespace PropertyAPI.Api.Errors;
+namespace PropertyAPI.Api.Common.Errors;
 // Copy past from the Microsoft.AspNetCore.Mvc.Infrastructure; 
 // Not possible to inherit because the DefaultProblemDetailsFactory is internal sealed class 
 public class PropertyProblemDetailsFactory : ProblemDetailsFactory
