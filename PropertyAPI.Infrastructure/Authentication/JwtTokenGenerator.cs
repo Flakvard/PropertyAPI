@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PropertyAPI.Application.Commmon.Interfaces.Authentication;
 using PropertyAPI.Application.Commmon.Interfaces.Services;
+using PropertyAPI.Domain.Entities;
 
 namespace PropertyAPI.Infrastructure.Authentication;
 
@@ -21,16 +22,16 @@ public class JwtTokenGenerator : IJwtTokenGenerator{
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public string GenerateToken(Guid userid, string FirstName, string LastName){
+    public string GenerateToken(User user){
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(_jwtTokenSettings.Secret)),
                 SecurityAlgorithms.HmacSha256);
 
         var claims = new[]{
-            new Claim(JwtRegisteredClaimNames.Sub, userid.ToString()),
-            new Claim(JwtRegisteredClaimNames.GivenName, FirstName),
-            new Claim(JwtRegisteredClaimNames.FamilyName, LastName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+            new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
