@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using ErrorOr;
 using MediatR;
 using MapsterMapper;
-using Mapster;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PropertyAPI.Api.Controllers;
 
 [Route("auth")]
+[AllowAnonymous] // ApiContoller has the [Authorize] attribute
 public class AuthenticationController : ApiController
 {
 
