@@ -4,8 +4,8 @@ namespace PropertyAPI.Infrastructure.Authentication;
 
 public class JwtTokenSettings{
     public const string SectionName = "JwtTokenSettings";
-    public required string Secret {get; init;}
-    public required double ExperyMinutes {get; init;}
-    public required string Issuer {get; init;}
-    public required string Audience {get; init;}
+    public string Secret {get; init;} = null!;
+    public double ExperyMinutes {get; init;} 
+    public string Issuer {get; init;} = null!;
+    public string Audience {get; init;} = null!;
 }

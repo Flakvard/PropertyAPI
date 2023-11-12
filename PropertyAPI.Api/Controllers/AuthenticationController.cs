@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using ErrorOr;
 using MediatR;
 using MapsterMapper;
-using Mapster;
 
 namespace PropertyAPI.Api.Controllers;
 
