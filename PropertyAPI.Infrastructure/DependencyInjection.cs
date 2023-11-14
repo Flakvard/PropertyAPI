@@ -44,7 +44,7 @@ public static class DependencyInjection {
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = JwtTokenSettings.Issuer,
-                ValidAudience  = JwtTokenSettings.Audience,
+                ValidAudience = JwtTokenSettings.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(JwtTokenSettings.Secret)
                 )
