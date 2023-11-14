@@ -1,12 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>e2312d02-93f3-4ee7-bf73-fe8468c46d3f</UserSecretsId>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\PropertyAPI.Contract\PropertyAPI.Contract.csproj" />
     <ProjectReference Include="..\PropertyAPI.Application\PropertyAPI.Application.csproj" />
