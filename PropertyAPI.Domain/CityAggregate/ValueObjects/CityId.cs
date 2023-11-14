@@ -1,13 +1,15 @@
 using PropertyAPI.Domain.Common.Models;
 
-namespace PropertyAPI.Domain.House.ValueObjects;
-
-public sealed class HouseNumId : ValueObject{
-    public Guid Value {get;}
-    private HouseNumId(Guid value){
+namespace PropertyAPI.Domain.CityAggregate.ValueObjects;
+public sealed class CityId : ValueObject
+{
+    public Guid Value { get; }
+    private CityId(Guid value)
+    {
         Value = value;
     }
-    public static HouseNumId CreateUnique(){
+    public static CityId CreateUnique()
+    {
         return new(Guid.NewGuid());
     }
     public override IEnumerable<object> GetEqualityComponents()

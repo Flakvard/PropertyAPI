@@ -1,19 +1,19 @@
 using PropertyAPI.Domain.Common.Models;
-using PropertyAPI.Domain.Properties.ValueObjects;
-using PropertyAPI.Domain.Price;
+using PropertyAPI.Domain.PriceAggregate;
+using PropertyAPI.Domain.PropertyAggregate.ValueObjects;
 
-namespace PropertyAPI.Domain.Properties;
+namespace PropertyAPI.Domain.PropertyAggregate;
 
 public sealed class Property
     : AggregateRoot<PropertyId>
 {
-    public int YearBuild { get;}
-    public int InsideM2 { get;}
-    public int OutsideM2 { get;}
-    public int Rooms { get;}
-    public int FloorLevels { get;}
-    public DateTime CreatedDate { get;}
-    public PropertyPrice PropertyPrice { get;}
+    public int YearBuild { get; }
+    public int InsideM2 { get; }
+    public int OutsideM2 { get; }
+    public int Rooms { get; }
+    public int FloorLevels { get; }
+    public DateTime CreatedDate { get; }
+    public Price PropertyPrice { get; }
     private Property(
         PropertyId id,
         int yearBuild,
@@ -22,7 +22,7 @@ public sealed class Property
         int rooms,
         int floorLevels,
         DateTime createdDate,
-        PropertyPrice propertyPrice) : base(id)
+        Price propertyPrice) : base(id)
     {
         YearBuild = yearBuild;
         InsideM2 = insideM2;
@@ -41,7 +41,7 @@ public sealed class Property
             int rooms,
             int floorLevels,
             DateTime createdDate,
-            PropertyPrice propertyPrice
+            Price propertyPrice
         )
     {
         return new(

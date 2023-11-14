@@ -1,13 +1,13 @@
 using PropertyAPI.Domain.Common.Models;
-using PropertyAPI.Domain.Addresses.ValueObjects;
-using PropertyAPI.Domain.House;
+using PropertyAPI.Domain.HouseAggregate;
+using PropertyAPI.Domain.AddressAggregate.ValueObjects;
 
-namespace PropertyAPI.Domain.Addresses;
+namespace PropertyAPI.Domain.AddressAggregate;
 public sealed class Address
     : AggregateRoot<AddressId>
 {
     private readonly List<HouseNum> _houseNum = new();
-    public string Name { get;}
+    public string Name { get; }
     public IReadOnlyList<HouseNum> HouseNum => _houseNum.AsReadOnly();
     private Address(
         AddressId id,
@@ -18,7 +18,6 @@ public sealed class Address
 
     // static factory method
     public static Address Create(
-        AddressId id,
         string name
         )
     {

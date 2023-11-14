@@ -1,19 +1,19 @@
 using PropertyAPI.Domain.Common.Models;
-using PropertyAPI.Domain.House.ValueObjects;
-using PropertyAPI.Domain.Price;
-using PropertyAPI.Domain.Properties;
+using PropertyAPI.Domain.HouseAggregate.ValueObjects;
+using PropertyAPI.Domain.PriceAggregate;
+using PropertyAPI.Domain.PropertyAggregate;
 
-namespace PropertyAPI.Domain.House;
+namespace PropertyAPI.Domain.HouseAggregate;
 public sealed class HouseNum
     : AggregateRoot<HouseNumId>
 {
     public string Number { get; }
     public Property Property { get; }
-    public PropertyPrice PropertyPrice { get; }
+    public Price PropertyPrice { get; }
     private HouseNum(
         HouseNumId id,
         Property property,
-        PropertyPrice propertyPrice,
+        Price propertyPrice,
         string name) : base(id)
     {
         Property = property;
@@ -25,7 +25,7 @@ public sealed class HouseNum
     public static HouseNum Create(
         HouseNumId housenumid,
         Property property,
-        PropertyPrice propertyPrice,
+        Price propertyPrice,
         string number
         )
     {
